@@ -1,2 +1,4 @@
 #! /bin/sh
-sudo darwin-rebuild switch --flake ~/Documents/nix-configure#m1pro
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+
+sudo darwin-rebuild switch --flake ${SCRIPT_DIR}#m1pro

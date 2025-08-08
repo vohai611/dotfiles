@@ -28,6 +28,7 @@
             #python global pkgs
             # pkgs.claude-code
             pkgs.python313Packages.polars
+            pkgs.python313Packages.django
             pkgs.zsh-autocomplete
             pkgs.clickhouse
             pkgs.poetry
@@ -46,7 +47,7 @@
             pkgs.awscli2
             pkgs.R
             pkgs.libgcrypt
-
+            pkgs.tree
         ];
 
       # Necessary for using flakes on this system.
