@@ -996,6 +996,7 @@ require('lazy').setup({
   require 'kickstart.plugins.project_manager',
   require 'kickstart.plugins.colorize',
   require 'kickstart.plugins.neogen',
+  require 'kickstart.plugins.tab',
 
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
