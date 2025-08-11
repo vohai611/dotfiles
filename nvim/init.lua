@@ -1050,4 +1050,6 @@ require('lazy').setup({
 --MY VIM COMMAND
 vim.cmd 'colorscheme nordfox'
 
+require('kickstart.plugins.term').setup()
+
 vim.diagnostic.config { virtual_text = false }
