@@ -99,7 +99,17 @@ function M.setup()
           term_buf = vim.api.nvim_get_current_buf()
           vim.api.nvim_set_current_win(current_win)
 
-          vim.fn.chansend(job_id, { command .. '\r\n' })
+          local file = vim.fn.getcwd() .. '/.venv/bin/activate'
+          --NOTE:  1 if exist
+          local venv_exist = vim.fn.filereadable(file)
+
+          if venv_exist == 1 then
+            print('Use existing venv at: ' .. file)
+            vim.fn.chansend(job_id, { 'source .venv/bin/activate && ' .. command .. '\r\n' })
+          else
+            print('No existing venv at: ' .. file)
+            vim.fn.chansend(job_id, { command .. '\r\n' })
+          end
         end
       end
     end)
