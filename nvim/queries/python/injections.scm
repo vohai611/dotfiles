@@ -1,13 +1,8 @@
 ;extends
-((string_content) @injection.content
-
-	   (#set! injection.combined)
-	   (#set! injection.language "sql")
-	   (#set! injection.include-children)
-
-
-
-	   ) @_x
-
-  (#match?  @_x "--sql.+[(select)|(with)]")
+(string
+  (string_content) @injection.content
+  (#match? @injection.content "^--sql.+(select|with|SELECT|WITH)")
+  (#set! injection.language "sql")
+  (#set! injection.include-children)
+  )
 
