@@ -48,6 +48,9 @@
             pkgs.R
             pkgs.libgcrypt
             pkgs.tree
+            pkgs.gemini-cli
+            pkgs.lua
+            pkgs.fd
         ];
 
       # Necessary for using flakes on this system.
