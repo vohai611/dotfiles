@@ -72,6 +72,7 @@ function M.setup()
     local options = {
       { name = 'python', command = 'python', term_type = 'python' },
       { name = 'ipython', command = 'ipython', term_type = 'ipython' },
+      { name = 'lua', command = 'lua', term_type = 'ipython' },
       { name = 'uv ipython', command = 'uv run ipython', term_type = 'ipython' },
       { name = 'chi-di', command = 'ch-chidi', term_type = 'ipython' },
       { name = 'chi-share', command = 'ch-chishare', term_type = 'ipython' },
