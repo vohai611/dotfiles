@@ -8,7 +8,7 @@ local term_buf = 0
 local term_type = nil
 
 -- Private function to get visual selection
-local function get_visual_selection()
+local function get_visual_selection(normalize_indent)
   -- Get the start and end positions of the visual selection
   local s_start = vim.fn.getpos "'<"
   local s_end = vim.fn.getpos "'>"
@@ -32,7 +32,26 @@ local function get_visual_selection()
   end
 
   -- Concatenate the lines to form the complete selected text
-  return table.concat(lines, '\n')
+  local result = table.concat(lines, '\n')
+
+  -- If normalizing, remove redundant consecutive newlines
+  if normalize_indent then
+    result = result:gsub('\n\n+', '\n') -- Replace 3+ newlines with just 2
+    result = result:gsub('^\n+', '') -- Remove leading newlines
+    result = result:gsub('\n+$', '') -- Remove trailing newlines
+  end
+
+  return result
+end
+
+-- Debug function to log variables to file
+local function log_to_file(var, filename)
+  filename = filename or '/tmp/nvim_debug.log'
+  local file = io.open(filename, 'a')
+  if file then
+    file:write(os.date '[%Y-%m-%d %H:%M:%S] ' .. vim.inspect(var) .. '\n')
+    file:close()
+  end
 end
 
 -- Setup function
@@ -54,6 +73,8 @@ function M.setup()
       { name = 'python', command = 'python', term_type = 'python' },
       { name = 'ipython', command = 'ipython', term_type = 'ipython' },
       { name = 'uv ipython', command = 'uv run ipython', term_type = 'ipython' },
+      { name = 'chi-di', command = 'ch-chidi', term_type = 'ipython' },
+      { name = 'chi-share', command = 'ch-chishare', term_type = 'ipython' },
       { name = 'Custom command...', command = nil, term_type = nil },
     }
 
@@ -122,10 +143,16 @@ function M.setup()
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Esc>', true, false, true), 'x', false)
     local selection = get_visual_selection()
 
-    -- Use bracket paste mode to send multi-line code as one block
+    -- Handle different terminal types
     if term_type == 'ipython' then
+      -- Use bracket paste mode for ipython
       vim.fn.chansend(job_id, '\x1b[200~' .. selection .. '\x1b[201~\r\n')
     elseif term_type == 'python' then
+      -- For regular python REPL, get normalized selection to avoid indent errors
+      local normalized_selection = get_visual_selection(true)
+      vim.fn.chansend(job_id, normalized_selection .. '\r\n')
+    else
+      -- Default behavior for other terminals
       vim.fn.chansend(job_id, selection .. '\r\n')
     end
 
