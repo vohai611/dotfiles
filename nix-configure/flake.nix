@@ -51,7 +51,16 @@
             pkgs.gemini-cli
             pkgs.lua
             pkgs.fd
+            pkgs.chafa
+            #pkgs.ghostty #NOTE: ghostty can not build with nix
+            pkgs.kitty
+            ##NOTE: font
+            pkgs.nerd-fonts.jetbrains-mono
+            pkgs.nerd-fonts.fira-code
         ];
+      # fonts.packages = [
+      #     (pkgs.nerdfonts.override{fonts = ["JetBrainsMono"];})
+      #   ];
 
       # Necessary for using flakes on this system.
       nix.settings.experimental-features = "nix-command flakes";
