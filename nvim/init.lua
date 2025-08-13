@@ -1,5 +1,7 @@
 --[[
 
+
+
 =====================================================================
 ==================== READ THIS BEFORE CONTINUING ====================
 =====================================================================
@@ -377,6 +379,7 @@ require('lazy').setup({
       },
       { 'nvim-telescope/telescope-ui-select.nvim' },
       { 'nvim-telescope/telescope-file-browser.nvim' },
+      { 'debugloop/telescope-undo.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
       { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
@@ -407,11 +410,14 @@ require('lazy').setup({
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
         --
-        -- defaults = {
-        --   mappings = {
-        --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-        --   },
-        -- },
+        defaults = {
+          layout_strategy = 'vertical',
+          layout_config = {
+            vertical = { height = 0.9 },
+          },
+          initial_mode = 'normal',
+          path_display = { shorten = 8 },
+        },
         -- pickers = {}
         extensions = {
           ['ui-select'] = {
@@ -428,6 +434,7 @@ require('lazy').setup({
       pcall(require('telescope').load_extension, 'fzf')
       pcall(require('telescope').load_extension, 'ui-select')
       pcall(require('telescope').load_extension, 'file_browser')
+      pcall(require('telescope').load_extension, 'undo')
 
       -- See `:help telescope.builtin`
       local builtin = require 'telescope.builtin'
@@ -443,6 +450,10 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
       vim.keymap.set('n', '<space><esc>', function()
         require('telescope').extensions.file_browser.file_browser()
+      end)
+
+      vim.keymap.set('n', '<leader>ud', function()
+        require('telescope').extensions.undo.undo { side_by_side = true }
       end)
 
       -- Slightly advanced example of overriding default behavior and theme
@@ -1051,5 +1062,6 @@ require('lazy').setup({
 vim.cmd 'colorscheme nordfox'
 
 require('kickstart.plugins.term').setup()
+require('kickstart.plugins.floatterm').setup()
 
 vim.diagnostic.config { virtual_text = false }
