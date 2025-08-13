@@ -1,0 +1,9 @@
+[preview]
+max_width = 1600
+max_height = 1600
+
+[adapter]
+chafa = { cmd = "chafa", args = ["--format", "symbols", "--colors", "256", "--size", "%wx%h", "%f"] }
+
+[previewer]
+image = "chafa"
