@@ -35,6 +35,7 @@
             pkgs.python313
             pkgs.python311
             pkgs.python310
+            pkgs.python312
             pkgs.neovim
             pkgs.nodejs
             pkgs.cmake
@@ -54,6 +55,8 @@
             pkgs.chafa
             #pkgs.ghostty #NOTE: ghostty can not build with nix
             pkgs.kitty
+
+            pkgs.nodePackages_latest.ts-node
             ##NOTE: font
             pkgs.nerd-fonts.jetbrains-mono
             pkgs.nerd-fonts.fira-code
