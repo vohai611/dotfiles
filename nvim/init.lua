@@ -2,6 +2,7 @@
 
 
 
+
 =====================================================================
 ==================== READ THIS BEFORE CONTINUING ====================
 =====================================================================
@@ -29,7 +30,7 @@ What is Kickstart?
   Kickstart.nvim is a starting point for your own configuration.
     The goal is that you can read every line of code, top-to-bottom, understand
     what your configuration is doing, and modify it to suit your needs.
-
+ini
     Once you've done that, you can start exploring, configuring and tinkering to
     make Neovim your own! That might mean leaving Kickstart just the way it is for a while
     or immediately breaking it into modular pieces. It's up to you!
@@ -94,6 +95,7 @@ vim.g.maplocalleader = ' '
 
 -- Set to true if you have a Nerd Font installed and selected in the terminal
 vim.g.have_nerd_font = true
+vim.diagnostic.config { virtual_text = false }
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -194,6 +196,12 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left wind
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+
+-- move between quickfix list
+vim.keymap.set('n', '<leader>cb', '<cmd>colder<return>')
+vim.keymap.set('n', '<leader>cn', '<cmd>cnext<return>')
+-- vim.keymap.set('n', '<C-S-k>', '<cmd>cprev<return>')
+-- vim.keymap.set('n', '<C-S-l>', '<cmd>cnewer<return>')
 
 -- NEOGIT
 vim.keymap.set('n', '<C-p>', function()
@@ -436,7 +444,11 @@ require('lazy').setup({
           -- Jump to the definition of the word under your cursor.
           --  This is where a variable was first declared, or where a function is defined, etc.
           --  To jump back, press <C-t>.
-          map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
+          map('gd', function()
+            require('telescope.builtin').lsp_definitions {
+              jump_type = 'split',
+            }
+          end, '[G]oto [D]efinition')
 
           -- Find references for the word under your cursor.
           map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
@@ -541,7 +553,6 @@ require('lazy').setup({
         -- clangd = {}
         -- gopls = {},
         -- pyright = {},
-        -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -550,23 +561,7 @@ require('lazy').setup({
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         -- ts_ls = {},
         --
-
-        lua_ls = {
-          -- cmd = { ... },
-          -- filetypes = { ... },
-          -- capabilities = {},
-          settings = {
-            Lua = {
-              completion = {
-                callSnippet = 'Replace',
-              },
-              -- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
-              -- diagnostics = { disable = { 'missing-fields' } },
-            },
-          },
-        },
       }
-
       -- Ensure the servers and tools above are installed
       --
       -- To check the current status of installed tools and/or manually install
@@ -587,6 +582,7 @@ require('lazy').setup({
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('mason-lspconfig').setup {
+        automatic_enable = true,
         handlers = {
           function(server_name)
             local server = servers[server_name] or {}
@@ -594,7 +590,10 @@ require('lazy').setup({
             -- by the server configuration above. Useful when disabling
             -- certain features of an LSP (for example, turning off formatting for ts_ls)
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-            require('lspconfig')[server_name].setup(server)
+
+            print(server_name)
+            --require('lspconfig')[server_name].setup(server)
+            vim.lsp.enable(server_name)
           end,
         },
       }
@@ -893,10 +892,12 @@ require('lazy').setup({
   require 'kickstart.plugins.project_manager',
   require 'kickstart.plugins.colorize',
   require 'kickstart.plugins.neogen',
-  require 'kickstart.plugins.tab',
+  -- require 'kickstart.plugins.tab',
   require 'kickstart.plugins.telescope',
+  require 'kickstart.plugins.inline_diagnose',
 
   require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
+  require 'kickstart.plugins.scroll', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
@@ -939,7 +940,13 @@ require('lazy').setup({
 --MY VIM COMMAND
 vim.cmd 'colorscheme nordfox'
 
-vim.diagnostic.config { virtual_text = false }
-
 require('kickstart.plugins.term').setup()
 require('kickstart.plugins.floatterm').setup()
+require('kickstart.plugins.lspconfig-override').setup()
+
+--vim.lsp.enable { 'pylsp', 'rust_analyzer', 'svelte', ' tailwindcss' }
+--vim.lsp.enable 'pylsp'
+--
+--
+-- Highlight scrollbar
+vim.api.nvim_command 'highlight SatelliteBar ctermbg=159 guibg=LightCyan'
