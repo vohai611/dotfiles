@@ -14,6 +14,7 @@
       # $ nix-env -qaP | grep wget
       environment.systemPackages =
         [ pkgs.vim
+            pkgs.go
             pkgs.ripgrep
             pkgs.rustc
             pkgs.mpv
@@ -55,6 +56,17 @@
             pkgs.chafa
             #pkgs.ghostty #NOTE: ghostty can not build with nix
             pkgs.kitty
+            pkgs.maccy
+
+            # scala stuff
+            pkgs.mill
+            pkgs.sbt
+            pkgs.scala_2_13
+            #pkgs.scala
+            pkgs.scala-next
+
+            # others lib
+            pkgs.graphviz
 
             pkgs.nodePackages_latest.ts-node
             ##NOTE: font
