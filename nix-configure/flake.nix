@@ -13,9 +13,15 @@
       # List packages installed in system profile. To search by name, run:
       # $ nix-env -qaP | grep wget
       environment.systemPackages =
-        [ pkgs.vim
+        [ 
+            pkgs.vim
+            pkgs.opencode
+            pkgs.sketchybar
+            pkgs.jankyborders
+            pkgs.nushell
             pkgs.go
             pkgs.ripgrep
+            pkgs.bruno
             pkgs.rustc
             pkgs.mpv
             pkgs.dust
@@ -27,11 +33,11 @@
             #pkgs.tailscale
             pkgs.python313Packages.pip
             #python global pkgs
-            # pkgs.claude-code
+            pkgs.claude-code
             pkgs.python313Packages.polars
             pkgs.python313Packages.django
             pkgs.zsh-autocomplete
-            pkgs.clickhouse
+            #pkgs.clickhouse
             pkgs.poetry
             pkgs.python313
             pkgs.python311
@@ -57,6 +63,7 @@
             #pkgs.ghostty #NOTE: ghostty can not build with nix
             pkgs.kitty
             pkgs.maccy
+            pkgs.duckdb
 
             # scala stuff
             pkgs.mill
@@ -92,6 +99,7 @@
 
       # The platform the configuration will be used on.
       nixpkgs.hostPlatform = "aarch64-darwin";
+  nixpkgs.config.allowUnfree = true;
     };
   in
   {
