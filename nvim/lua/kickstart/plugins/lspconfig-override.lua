@@ -59,6 +59,13 @@ function M.setup()
     },
   })
 
+  vim.lsp.config('sourcekit', {
+    cmd = { 'xcrun', 'sourcekit-lsp' },
+    filetypes = { 'swift', 'objective-c', 'objective-cpp' },
+    root_markers = { 'Package.swift', '.git' },
+  })
+  vim.lsp.enable('sourcekit')
+
   -- require('lspconfig').rust_analyzer.setup {}
   -- require('lspconfig').svelte.setup {}
   -- require('lspconfig').tailwindcss.setup {}

@@ -842,6 +842,7 @@ require('lazy').setup({
         'typescript',
         'css',
         'sql',
+        --'swift',
       },
       -- Autoinstall languages that are not installed
       auto_install = true,
@@ -865,7 +866,7 @@ require('lazy').setup({
   -- The following comments only work if you have downloaded the kickstart repo, not just copy pasted the
   -- init.lua. If you want these files, they are in the repository, so you can just download them and
   -- place them in the correct locations.
-  { 'nvim-treesitter/playground' },
+  -- playground removed: use built-in :InspectTree and :EditQuery instead
   { 'EdenEast/nightfox.nvim' },
   {
     'andythigpen/nvim-coverage',
