@@ -1,6 +1,4 @@
-{ pkgs, ... }: {
-  home.username = "haivo";
-  home.homeDirectory = "/Users/haivo";
+{ pkgs, lib, ... }: {
   home.stateVersion = "24.11";
 
   home.packages = with pkgs; [
@@ -44,7 +42,7 @@
     # scala
     mill
     sbt
-    scala_2_13
+    (lib.lowPrio scala_2_13)
     scala-next
 
     # build tools
