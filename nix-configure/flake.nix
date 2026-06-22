@@ -21,6 +21,9 @@
       };
       nix.optimise.automatic = true;
 
+      programs.zsh.enable = true;
+      environment.systemPath = [ "/etc/profiles/per-user/haivo/bin" ];
+
       users.users.haivo = {
         name = "haivo";
         home = "/Users/haivo";

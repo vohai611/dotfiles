@@ -3,6 +3,9 @@
 
   home.packages = with pkgs; [
     # cli tools
+    ffmpeg
+    mise
+    lima
     glab
     pkg-config
     openssl
